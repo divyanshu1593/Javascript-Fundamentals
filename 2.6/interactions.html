@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactions</title>
+</head>
+<body>
+    <script>
+        // alert will take a message an show it in a modal window
+        // modal window means user can't interact with anything else unti they deal with that modal window
+        // alert will have option of 'ok'
+        alert("This is an alert message!");
+
+        // prompt will take input from user and return it
+        let a = prompt("Enter something","something");  // it will take 2 arguments, message and the default input
+        console.log(a); // it will be null if cancle is pressed otherwise it will be user input
+
+        // confirm will show a message(question) and give option of 'ok' and 'cancle'
+        // it will return true if ok is pressed otherwise it will be false
+        let b = confirm("Do you like Javascript?");
+        console.log(b);
+    </script>
+</body>
+</html>
