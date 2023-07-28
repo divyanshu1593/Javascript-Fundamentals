@@ -1,0 +1,1 @@
+alert("This is external javascript and it will be executed instead of js in the script tag!");

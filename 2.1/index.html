@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+</head>
+<body>
+    <script>
+        alert("This is how javascript is added in html");
+    </script>
+    <script>
+        alert("There can be more than one script tag in html");
+    </script>
+    <script>
+        // javascript comment
+        <!-- html comment also works inside script tag -->
+        /*
+        a multiline comment
+        tag attribute is not compusory from html5
+        same for language attribute because javascript is default language
+        */
+    </script>
+    <script src="external1.js"></script>
+    <script src="external2.js">
+        alert("This javascript will not be executed because external javascript is given src attribute");
+    </script>
+</body>
+</html>
