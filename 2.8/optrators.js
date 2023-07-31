@@ -71,7 +71,7 @@ x = ++y;  // first y is incremented so y == 7 and then it is return to x so x ==
 console.log(~5);  // -6
 
 // diffrence between >> and >>>
-// >> is for right shift (it will preserve the sign of the number by filling 1s and left side)
+// >> is for right shift (it will preserve the sign of the number by filling 1's on left side if MSB is 1 or 0's on left side if MSB is 0)
 x = -6;  // 111...010
 console.log(x >> 2);  // 111...110  which is -2 in 2's complement form
 
