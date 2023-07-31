@@ -1,3 +1,5 @@
+"use strict";
+
 // comparison operators are ==, ===, <, >, <=, >=, !=, !==
 // comparison operators alsways return a boolean value
 // Example
