@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+</head>
+<body>
+    <!--
+    The following function returns true if the parameter age is greater than 18.
+
+    Otherwise it asks for a confirmation and returns its result.
+
+    function checkAge(age) {
+        if (age > 18) {
+            return true;
+        } else {
+            return confirm('Did parents allow you?');
+        }
+    }
+    Rewrite it, to perform the same, but without if, in a single line.
+
+    Make two variants of checkAge:
+
+    Using a question mark operator ?
+    Using OR ||
+    -->
+    <script>
+        let age = 15;
+        function checkAge1(age){
+            // using ?
+            return age>18 ? ture : confirm('Did parents allow you');
+        }
+
+        function checkAge2(age){
+            // using ||
+            return age>18 || confirm('Did parents allow you');
+        }
+
+        checkAge1();
+        checkAge2();
+    </script>
+</body>
+</html>
