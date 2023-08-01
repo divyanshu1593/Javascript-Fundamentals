@@ -14,7 +14,7 @@ const c = 15; // its vaule cannot be changed after assignment
 // Example
 const RED = "#ff0000";
 
-// variable names should contain only alphabets, didgits , $ and _
+// variable names should contain only alphabets, digits , $ and _
 // its name should not start with a digit
 // its name should not be a reserved keyword
 
