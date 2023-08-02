@@ -5,7 +5,7 @@
  * 
  * @param {number} length 
  * @param {number} width 
- * @returns perimeter of a rectangle
+ * @returns {number} perimeter of a rectangle
  */
 function perimeter(length, width){
     return 2 * (length + width);
