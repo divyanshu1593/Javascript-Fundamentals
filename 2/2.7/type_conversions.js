@@ -25,6 +25,10 @@ let d = "100";
 console.log(typeof d);  // string
 d = Number(d);
 console.log(typeof d);  // number
+d = "+45";
+console.log(typeof d);  // string
+d = Number(d);
+console.log(d); // 45 (not NaN) because +45 is a valid number and is same as 45
 
 // unary + can also be used for explicitly coverting to number datatype
 // it will work same as Number()
