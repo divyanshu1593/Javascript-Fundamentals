@@ -34,7 +34,8 @@ console.log(0 !== false);  // true
 console.log(null > 0 || null == 0);  // false
 console.log(null >= 0);  // because it will be converted to the number
 
-// comparing NaN will anything will always give false
+// comparing NaN with anything will always give false
 console.log(NaN > 0);  // false
 console.log(NaN == 0);  // false
-console.log(NaN) < 0;  // false
+console.log(NaN < 0);  // false
+console.log(NaN == NaN);  // false (even comparing with it self will give false!)
