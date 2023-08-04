@@ -41,7 +41,7 @@ let unknownUser;
 console.log(unknownUser?.favouriteAnime.name);  // undefined beacuse unknownUser is undefined
 
 
-// ?. is not an operator, it is a syntax construt
+// ?. is not an operator, it is a syntax construct
 // ?. can be user with () and []
 
 // ?. for cheking if the function exists
