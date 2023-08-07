@@ -19,3 +19,5 @@ let demoObject = {
 for (let key in demoObject){
     console.log(`${key}: ${demoObject[key]}`);
 }
+
+console.log(typeof sym[Symbol.toPrimitive]());  // symbol , so this is getting converted to a symbol before it is used as a key (thats why it is not showing in the for..in loop)
