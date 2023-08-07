@@ -43,6 +43,13 @@ console.log(str.at(2));  // m
 console.log(str.at(-1));  // g
 
 
+// for..of loop for iterating through a string
+let demoString = "some string";
+
+for (let char of demoString){
+    console.log(char);
+}
+
 // string are immutable
 //console.log(str[2] = 'a');  // error because string can not be mutated
 
