@@ -14,9 +14,10 @@ if (true) {
 sayHi();
 */
 
-// Hello, John
-// because user will be taken from lexical env of if block and phrase will be taken from global lexical env
+"use strict";
 
+
+// ERROR because function sayHi is not defined in global scope!
 
 // checking
 
