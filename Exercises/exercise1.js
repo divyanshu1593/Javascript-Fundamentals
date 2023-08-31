@@ -25,12 +25,12 @@ function createBook(title = "unknown", author = "unknown", isbn){
         return ;
     }
 
-    if (typeof title != "string"){
+    if (typeof title != "string" || title == ''){
         console.log("Invalid title");
         return ;
     }
 
-    if (typeof author != "string"){
+    if (typeof author != "string" || author == ''){
         console.log("Invalid author");
         return ;
     }
