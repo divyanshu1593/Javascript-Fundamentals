@@ -56,53 +56,61 @@ function createBook(title = "unknown", author = "unknown", isbn){
 /**
  * 
  * @param {object} book 
+ * @returns {boolean} - true if book is added otherwise false
  */
 function addBookToLibrary(book){
+    if (!isValidBookObject(book)){
+        console.log("book object is not valid");
+        return false;
+    }
+
     if (library.includes(book)){
         console.log("book already exists");
-        return ;
+        return false;
     }
 
     if (library.find(libBook => book.isbn == libBook.isbn)){
         console.log("this is a duplicate book, it is not created using createBook() function");
-        return ;
+        return false;
     }
 
     library.push(book);
+    return true;
 }
 
 
 /**
  * 
  * @param {string} isbn 
- * @returns {undefined}
+ * @returns {boolean}  - true if book checkedout otherwise false
  */
 function checkoutBook(isbn){
     if (!isValidIsbn(isbn)){
         console.log("ISBN is not valid");
-        return ;
+        return false;
     }
 
     let index = library.findIndex(book => book.isbn == isbn);
 
     if (index == -1){
         console.log("book with this ISBN is not present in library");
-        return ;
+        return false;
     }
 
     if (library[index].checkedOut){
         console.log("book is already checkouted");
-        return ;
+        return false;
     }
 
     if (library[index].checkoutCount == MAX_CHECKOUTS){
         console.log("max checkout limit reached");
-        return ;
+        return false;
     }
 
     library[index].checkedOut = true;
     library[index].checkoutCount += 1;
     library[index].dueDate = new Date(Date.now() + DUE_TIME_INTERVAL);
+    return true;
 }
 
 
@@ -119,27 +127,28 @@ function listOverdueBooks(){
  * 
  * @param {string} isbn 
  * @param {number} rating 
- * @returns {undefined}
+ * @returns {boolean}  - false if not able to rate otherwise true
  */
 function rateBook(isbn, rating){
     if (!isValidIsbn(isbn)){
         console.log("invalid ISBN");
-        return ;
+        return false;
     }
 
     if (typeof rating != "number" || Math.trunc(rating) != rating || rating < 1 || rating > 5){
         console.log("invalid rating");
-        return ;
+        return false;
     }
 
     let book = library.find(book => book.isbn == isbn);
 
     if (!book){
         console.log("book with this isbn does not exist in library");
-        return ;
+        return false;
     }
 
     book.rating[rating - 1] += 1;
+    return true;
 }
 
 
@@ -165,8 +174,13 @@ function getAverageRating(isbn){
     let totalRatings = 0;
 
     for (let i = 0; i < 5; i++){
-        totalNumberOfRatings = book.rating[i];
-        totalRatings = book.rating[i] * (i + 1);
+        totalNumberOfRatings += book.rating[i];
+        totalRatings += book.rating[i] * (i + 1);
+    }
+
+    if (totalNumberOfRatings == 0){
+        console.log("this book is not been rated yet");
+        return ;
     }
 
     return totalRatings / totalNumberOfRatings;
@@ -175,27 +189,28 @@ function getAverageRating(isbn){
 /**
  * 
  * @param {string} isbn 
- * @returns {undefined}
+ * @returns {boolean}  - false if not able return book otherwise true
  */
 function returnBook(isbn){
     if (!isValidIsbn(isbn)){
         console.log("ISBN is not valid");
-        return ;
+        return false;
     }
 
     let index = library.findIndex(book => book.isbn == isbn);
 
     if (index == -1){
         console.log("book with this ISBN was never added to library");
-        return ;
+        return false;
     }
 
     if (!library[index].checkedOut){
         console.log("book was not checkouted");
-        return ;
+        return false;
     }
 
     library[index].checkedOut = false;
+    return true;
 }
 
 
@@ -238,20 +253,22 @@ function searchBooks(query){
 /**
  * 
  * @param {string} criteria 
- * @returns {undefined}
+ * @returns {boolean}  - true if was able to sort otherwise false
  */
 function sortLibrary(criteria){
-    if (typeof criteria != "string" || criteria != "title" || criteria != "author" || criteria != "average rating"){
+    if (typeof criteria != "string" || (criteria != "title" && criteria != "author" && criteria != "average rating")){
         console.log("invalid criteria");
-        return ;
+        return false;
     }
 
     if (criteria == "average rating"){
-        library.sort((book1, book2) => getAverageRating(book1.isbn) - getAverageRating(book2.isbn));
-        return ;
+        // higher rated book should come first in the array
+        library.sort((book1, book2) => (getAverageRating(book2.isbn) ?? 0) - (getAverageRating(book1.isbn) ?? 0));
+        return true;
     }
 
     library.sort((book1, book2) => book1[criteria].localeCompare(book2[criteria]));
+    return true;
 }
 
 
@@ -293,5 +310,23 @@ function isValidIsbn(isbn){
         }
     }
 
+    return true;
+}
+
+
+/**
+ * 
+ * @param {object} book 
+ * @returns {boolean}  - true if it is valid book object ohterwise false
+ */
+function isValidBookObject(book){
+    if (typeof book != 'object') return false;
+    if (book.title === undefined) return false;
+    if (book.author === undefined) return false;
+    if (book.isbn === undefined) return false;
+    if (book.checkedOut === undefined) return false;
+    if (book.checkoutCount === undefined) return false;
+    if (book.rating === undefined) return false;
+    
     return true;
 }
