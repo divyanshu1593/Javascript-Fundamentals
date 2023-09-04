@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>globalThis</title>
+</head>
+<body>
+    <!-- NOTE that this is not reliable and not work everywhere
+    this is working here because script is not in modules
+    so this does not work in node js and it will print undefined -->
+    <script>
+        "use strict";
+
+        // GLOBAL variables declaared using VAR are added as a property of globalThis
+        var x = 10;
+        console.log(globalThis.x);  // 10
+
+        let y = 10;
+        console.log(globalThis.y);  // undefined, because it does not work for let or const
+
+        // global function declaration are added as a property of globalThis
+        function func(){
+            console.log('inside func');
+        }
+
+        console.log(globalThis.func);
+    </script>
+</body>
+</html>
