@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This does not work</title>
+</head>
+<body>
+    <!-- This does not work because var declaration are only hoiste to the top of the script but here console log is in another script -->
+    <script>
+        "use strict";
+        console.log(x);
+    </script>
+    <script>
+        var x;
+    </script>
+</body>
+</html>
