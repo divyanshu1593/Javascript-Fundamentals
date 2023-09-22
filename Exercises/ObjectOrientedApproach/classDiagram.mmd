@@ -1,0 +1,37 @@
+---
+Library Management System
+---
+
+classDiagram
+    class User{
+        +string firstName
+        +string lastName
+        +string fullName
+        +int id
+    }
+
+    note for User "fullName should be derived from firstName and lastName"
+
+    class Book{
+        +title: string
+        +author: string
+        +isbn: string
+        +isCheckedOut: boolean
+        +checkoutCount: int
+        +ratings: List~Rating~
+        +addToLibrary()
+        +checkout()
+        +return()
+        +rate()
+        +getAvearageRating()
+    }
+
+    class Library{
+        +books: List~Book~$
+        +getOverdueBooks()$
+        +getBooksByAuthor()$
+        +getBookdsByTitle()$
+        +sort()$
+        +save()$
+        +load()$
+    }
