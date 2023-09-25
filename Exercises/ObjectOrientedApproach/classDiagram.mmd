@@ -7,7 +7,7 @@ classDiagram
         +string firstName
         +string lastName
         +string fullName
-        +int id
+        +validate()$
     }
 
     note for User "fullName should be derived from firstName and lastName"
@@ -35,6 +35,7 @@ classDiagram
         +type: string
         +date: Date
         +user: User
+        +validate()$
     }
 
     note for Transaction "type can be return or checkout"
