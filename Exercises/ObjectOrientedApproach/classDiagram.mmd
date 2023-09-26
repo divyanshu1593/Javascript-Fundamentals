@@ -20,7 +20,11 @@ classDiagram
         +checkoutCount: int
         +ratings: List~Rating~
         +history: List~Transaction~
+        +dueDate: Date
+        +isAddedToLibrary
         +usedISBN: Set~string~$
+        +MAX_CHECKOUTS: int$
+        +DUE_TIME_INTERVAL: int$
         +addToLibrary()
         +checkout()
         +return()
@@ -29,6 +33,8 @@ classDiagram
         +getTotalReviews()
         +getReviewsByMinimumRating()
         +getReviewsWithComment()
+        +validate()$
+        -isValidISBN()$
     }
     
     class Transaction{
@@ -54,6 +60,7 @@ classDiagram
         +rating: int
         +comment: string
         +user: User
+        +validate()$
     }
 
     Library "1" o-- "0..*" Book

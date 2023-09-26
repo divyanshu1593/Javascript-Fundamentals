@@ -109,6 +109,7 @@ class Review {
      * @param {number} obj.rating
      * @param {string|undefined} obj.comment
      * @param {User} obj.user
+     * @returns {Review}
      */
     constructor({rating, comment, user} = {}){
         Review.validate(rating, comment, user);
@@ -146,10 +147,44 @@ class Review {
 class Book {
     static usedISBN = new Set();
 
-    constructor(title, author, isbn){
-        Book.validate(title, author, isbn);
+    static get MAX_CHECKOUTS(){
+        return 3;
     }
 
+    static get DUE_TIME_INTERVAL(){
+        return 1000 * 60 * 60 * 24;
+    }
+
+    /**
+     * 
+     * @param {string} title 
+     * @param {string} author 
+     * @param {string} isbn 
+     * @returns {Book}
+     */
+    constructor(title, author, isbn){
+        Book.validate(title, author, isbn);
+
+        if (Book.usedISBN.has(isbn)) throw new Error('ISBN already taken');
+        Book.usedISBN.add(isbn);
+
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isCheckedOut = false;
+        this.checkoutCount = 0;
+        this.rating = [];
+        this.history = [];
+        this.dueDate = null;
+        this.isAddedToLibrary = false;
+    }
+
+    /**
+     * 
+     * @param {string} title 
+     * @param {string} author 
+     * @param {string} isbn 
+     */
     static validate(title, author, isbn){
         if (title === undefined || author === undefined || isbn === undefined){
             throw new FieldsMissingError('title', 'author', 'isbn');
@@ -159,10 +194,19 @@ class Book {
             throw new TypeError('String expected');
         }
 
+        if (title == '' || author == '') throw new EmptyStringError('title', 'author');
+
         if (!Book.#isValidISBN(isbn)) throw new TypeError('Invalid ISBN');
     }
 
+    /**
+     * 
+     * @param {string} isbn 
+     * @returns {boolean} true if isbn is valid, false otherwise
+     */
     static #isValidISBN(isbn){
+        if (isbn.length != 17) return false;
+
         isbn = isbn.split('-');
 
         if (isbn.length != 5) return false;
@@ -175,4 +219,28 @@ class Book {
 
         return true;
     }
+
+    addToLibrary(){
+        if (Library.books.includes(this)){
+            throw new Error('Book already exists');
+        }
+
+        this.isAddedToLibrary = true;
+        Library.books.push(this);
+    }
+
+    checkout(user){
+        if (this.isCheckedOut) throw new Error('book is already checkedout');
+        if (this.checkoutCount == Book.MAX_CHECKOUTS) throw new Error('Max checkout limit reached');
+        if (!this.isAddedToLibrary) throw new Error('Book is not added to library');
+
+        this.history.push(new Transaction('checkout', new Date(), user));
+        this.isCheckedOut = true;
+        this.checkoutCount += 1;
+        this.dueDate = new Date(Date.now() + Book.DUE_TIME_INTERVAL);
+    }
+}
+
+class Library {
+    static books = [];
 }
