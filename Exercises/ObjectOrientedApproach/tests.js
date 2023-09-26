@@ -92,3 +92,83 @@ describe('Transaction', () => {
         assert.equal(transaction.user.fullName, 'Divyanshu Motivaras');
     });
 });
+
+describe('Review', () => {
+    let userObj;
+    before(() => {
+        userObj = new User('Divyanshu', 'Motivaras');
+    });
+
+    it('fails on missing fields', () => {
+        assert.throws(() => {
+            new Review();
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5, comment: 'some comment'});
+        });
+
+        assert.throws(() => {
+            new Review({comment: 'some comment'});
+        });
+    });
+
+    it('fails on invalid rating', () => {
+        assert.throws(() => {
+            new Review({rating: '5', user: userObj});
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5.5, user: userObj});
+        });
+
+        assert.throws(() => {
+            new Review({rating: Infinity, user: userObj});
+        });
+
+        assert.throws(() => {
+            new Review({rating: NaN, user: userObj});
+        });
+    });
+
+    it('fails on invalid comment', () => {
+        assert.throws(() => {
+            new Review({rating: 5, user: userObj, comment: true});
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5, user: userObj, comment: ''});
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5, user: userObj, comment: 35});
+        });
+    });
+
+    it('fails on invalid user object', () => {
+        assert.throws(() => {
+            new Review({rating: 5, user: false});
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5, user: {firstName: 'Divyanshu', lastName: 'Motivaras'}});
+        });
+
+        assert.throws(() => {
+            new Review({rating: 5, user: 'Divyanshu Motivaras'});
+        });
+    });
+
+    it('works on valid inputs', () => {
+        let review = new Review({rating: 5, user: userObj});
+
+        assert.equal(review.rating, 5);
+        assert.equal(review.user.fullName, 'Divyanshu Motivaras');
+
+        let review2 = new Review({rating: 3, comment: 'it was ok', user: userObj});
+
+        assert.equal(review2.rating, 3);
+        assert.equal(review2.comment, 'it was ok');
+        assert.equal(review2.user.fullName, 'Divyanshu Motivaras');
+    });
+});
