@@ -4,9 +4,10 @@ Library Management System
 
 classDiagram
     class User{
-        +string firstName
-        +string lastName
-        +string fullName
+        +firstName: string
+        +lastName: string
+        +fullName: string
+        +booksLended: Set~Book~
         +validate()$
     }
 
@@ -20,8 +21,7 @@ classDiagram
         +checkoutCount: int
         +ratings: List~Rating~
         +history: List~Transaction~
-        +dueDate: Date
-        +isAddedToLibrary
+        +isAddedToLibrary: boolean
         +usedISBN: Set~string~$
         +MAX_CHECKOUTS: int$
         +DUE_TIME_INTERVAL: int$
@@ -31,7 +31,7 @@ classDiagram
         +rate()
         +calculateAverageRating()
         +getTotalReviews()
-        +getReviewsByMinimumRating()
+        +getReviewsWithRating()
         +getReviewsWithComment()
         +validate()$
         -isValidISBN()$

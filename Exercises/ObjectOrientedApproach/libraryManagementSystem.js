@@ -36,6 +36,7 @@ class User {
 
         this.firstName = firstName;
         this.lastName = lastName;
+        this.booksLended = new Set();
     }
 
     /**
@@ -173,9 +174,8 @@ class Book {
         this.isbn = isbn;
         this.isCheckedOut = false;
         this.checkoutCount = 0;
-        this.rating = [];
+        this.ratings = [];
         this.history = [];
-        this.dueDate = null;
         this.isAddedToLibrary = false;
     }
 
@@ -229,18 +229,160 @@ class Book {
         Library.books.push(this);
     }
 
+    /**
+     * 
+     * @param {User} user 
+     */
     checkout(user){
         if (this.isCheckedOut) throw new Error('book is already checkedout');
         if (this.checkoutCount == Book.MAX_CHECKOUTS) throw new Error('Max checkout limit reached');
         if (!this.isAddedToLibrary) throw new Error('Book is not added to library');
 
         this.history.push(new Transaction('checkout', new Date(), user));
+        user.booksLended.add(this);
         this.isCheckedOut = true;
         this.checkoutCount += 1;
-        this.dueDate = new Date(Date.now() + Book.DUE_TIME_INTERVAL);
+    }
+
+    return(){
+        if (!this.isCheckedOut) throw new Error('book was never checked out');
+
+        this.isCheckedOut = false;
+        this.history.push(new Transaction('return', new Date(), this.history.at(-1).user));
+    }
+
+    /**
+     * 
+     * @param {object} obj 
+     * @param {number} obj.rating 
+     * @param {string|undefined} obj.comment 
+     * @param {User} obj.user 
+     */
+    rate({rating, comment, user}={}){
+        if (this.ratings.find(review => review.user == user)) throw new Error('User has already reviewed this book');
+
+        this.ratings.push(new Review({rating, comment, user}));
+    }
+
+    /**
+     * 
+     * @returns {number} average rating of the book
+     */
+    calculateAverageRating(){
+        if (this.ratings.length == 0) throw new Error(`cant't calculate average rating of an unrated book`);
+
+        let totalRating = 0;
+
+        for (let review of this.ratings){
+            totalRating += review.rating;
+        }
+
+        return totalRating / this.ratings.length;
+    }
+
+    /**
+     * 
+     * @returns {number} total number of reviews of this book
+     */
+    getTotalReviews(){
+        return this.ratings.length;
+    }
+
+    /**
+     * 
+     * @param {number} rating 
+     * @returns {Array} array of reviews with having given rating
+     */
+    getReviewsWithRating(rating){
+        if (typeof rating != 'number' || rating < 1 || rating > 5 || Math.trunc(rating) != rating){
+            throw new TypeError('Invalid value of rating: rating can only be a integer between 1 and 5 inclusive');
+        }
+
+        return this.ratings.filter(review => review.rating == rating);
+    }
+
+    /**
+     * 
+     * @param {string} partialComment 
+     * @returns {Array} array of reviews with comment partially or fully mathcing partialComment (case insensitive)
+     */
+    getReviewsWithComment(partialComment){
+        let commentRegEx = new RegExp(partialComment, 'i');
+
+        return this.ratings.filter(review => commentRegEx.test(review.comment));
     }
 }
 
 class Library {
     static books = [];
+
+    /**
+     * 
+     * @returns {Array} array of books that have passed its due date
+     */
+    static getOverDueBooks(){
+        return Library.books.filter(book => {
+            if (book.isCheckedOut){
+                if (Date.now() > book.history.at(-1).date.getTime() + Book.DUE_TIME_INTERVAL) return true;
+            }
+        });
+    }
+
+    /**
+     * 
+     * @param {string} partialAuthorName 
+     * @returns {Array} array of books with author's name partially or fully matching partialAuthorName
+     */
+    static getBooksByAuthor(partialAuthorName){
+        if (partialAuthorName === undefined) throw new FieldsMissingError('partialAuthorName');
+        if (typeof partialAuthorName != 'string') throw new TypeError('String Expected');
+        if (partialAuthorName == '') throw new EmptyStringError('partialAuthorName');
+
+        let authorRegEx = new RegExp(partialAuthorName, 'i');
+        return Library.books.filter(book => authorRegEx.test(book.author));
+    }
+
+    /**
+     * 
+     * @param {string} partialTitle 
+     * @returns {Array} array of books with title partially or fully matching partialTitle
+     */
+    static getBooksByTitle(partialTitle){
+        if (partialTitle === undefined) throw new FieldsMissingError('partialTitle');
+        if (typeof partialTitle != 'string') throw new TypeError('String Expected');
+        if (partialTitle == '') throw new EmptyStringError('partialTitle');
+
+        let TitleRegEx = new RegExp(partialTitle, 'i');
+        return Library.books.filter(book => TitleRegEx.test(book.title));
+    }
+
+    /**
+     * 
+     * @param {string} criteria 
+     */
+    static sort(criteria){
+        if (typeof criteria != "string" || (criteria != "title" && criteria != "author" && criteria != "average rating")){
+            throw new Error('Invalid criteria');
+        }
+    
+        if (criteria == "average rating"){
+            // higher rated book should come first in the array
+            Library.books.sort((book1, book2) => (book2.calculateAverageRating() ?? 0) - (book1.calculateAverageRating() ?? 0));
+            return ;
+        }
+    
+        Library.books.sort((book1, book2) => book1[criteria].localeCompare(book2[criteria]));
+    }
+
+    static save(){
+        localStorage.setItem('library', JSON.stringify(Library.books));
+    }
+
+    static load(){
+        if (!localStorage.getItem('library')){
+            throw new Error('Library not present in storage');
+        }
+    
+        Library.books = JSON.parse(localStorage.getItem('library'));
+    }
 }
