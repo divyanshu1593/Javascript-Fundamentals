@@ -3,4 +3,5 @@ node_modules
 
 # ingnoring temporary test code
 tempTestCode.js
+tempTestCode1.js
 tempTestCode.html
