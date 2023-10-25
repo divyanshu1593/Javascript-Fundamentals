@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFS</title>
+</head>
+<body>
+    <!-- some example elements to be travered using breadth first search -->
+    <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+    </table>
+    <p>
+        some paragraph text
+    </p>
+    <div>
+        <span>
+            something
+        </span>
+        <span>
+            other thing
+        </span>
+    </div>
+    <script>
+        function bfs(node){
+            let queue = [node];
+
+            while (queue.length != 0){
+                let node = queue.shift();
+                console.log(node);
+                
+                for (let child of node.childNodes){
+                    queue.push(child);
+                }
+            }
+        }
+
+        bfs(document.documentElement);
+    </script>
+</body>
+</html>

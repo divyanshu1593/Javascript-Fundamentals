@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walking the dom</title>
+</head>
+<body>
+    <div>
+        <p>some example node</p>
+    </div>
+    <!-- some commment -->
+    <script>
+        // node can be navigated in the DOM by following ways
+        // following top three node are properties of the document object
+        console.log(document.documentElement);  // <html>
+        console.log(document.body);  // <body>
+        console.log(document.head);  // <head>
+        
+        // child nodes can be accessed as following
+        let childNodes = document.body.childNodes;
+        console.log(typeof childNodes);  // object
+        console.log(Array.isArray(childNodes));  // child node is NOT an array, it is an array like object
+        console.log(childNodes);
+
+        // child nodes will contail all the childes of a partucular node (body in this case)
+        // it will only contain nodes that are added yet
+        // so it will not contain the p node after the script tag becuase it is not loaded yet because it has only read until the script tag
+        for (let child of childNodes){
+            console.log(child);
+        }
+
+        // should not use for..in loop because it will show all enumerable properties like length, entries and etc
+        // for (let prop in childNodes){
+        //     console.log(prop, childNodes[prop]);
+        // }
+
+        // the node.firstChild and node.lastChild will give the first and last child respectevly
+        console.log('first child of body: ', document.body.firstChild);
+        console.log('last child of body: ', document.body.lastChild);
+
+        // node.hasCHildNodes() will give true if node has childrens and false otherwise
+        console.log(document.body.hasChildNodes());  // true
+        console.log(document.body.firstChild.hasChildNodes());  // false, becuase it is a text node and text nodes are always leaf nodes
+
+        // node.parentNode will give the parent node of that node
+        console.log(document.body.parentNode === document.documentElement);  // true becuase <html> is parent of <body>
+        
+        // node.nextSilbling and node.previousSibling will give the right and left sibling respectevly
+        // sibling are the nodes with same parent
+        console.log(document.head.nextSibling.nextSibling === document.body);  // true because <head> next sibling is the text node with newline charachter and its next node is <body>
+        console.log(document.body.previousSibling.previousSibling === document.head);  // true
+        console.log(document.body.nextSibling)  // null becuase null means the node does not exist (<body> has no next sibling)
+        
+        // there do exist same navingations for Element only navigation
+        // Example
+        console.log(document.head.nextElementSibling === document.body);  // true
+        // other examples are: parentElement, nextElementSibling, previousElementSibling, children, firstElementChild, lastElementChild
+        
+    </script>
+    <p>other nodes after script</p>
+</body>
+</html>

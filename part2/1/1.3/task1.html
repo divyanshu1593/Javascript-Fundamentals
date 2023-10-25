@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--
+Look at this page:
+For each of the following, give at least one way of how to access them:
+
+The <div> DOM node?
+The <ul> DOM node?
+The second <li> (with Pete)?
+-->
+<html>
+<body>
+  <div>Users:</div>
+  <ul>
+    <li>John</li>
+    <li>Pete</li>
+  </ul>
+  <script>
+    // first
+    console.log(document.body.firstElementChild);
+    // second
+    console.log(document.body.children[1]);
+    // third
+    console.log(document.body.children[1].lastElementChild);
+  </script>
+</body>
+</html>

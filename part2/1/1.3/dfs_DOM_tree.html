@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFS</title>
+</head>
+<body>
+    <!-- some example elements to be travered using depth first search -->
+    <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+    </table>
+    <p>
+        some paragraph text
+    </p>
+    <div>
+        <span>
+            something
+        </span>
+        <span>
+            other thing
+        </span>
+    </div>
+    <script>
+        function dfs(node){
+            console.log(node);
+            if (node.hasChildNodes()){
+                for (let childNode of node.childNodes){
+                    dfs(childNode);
+                }
+            }
+        }
+
+        dfs(document.documentElement);
+    </script>
+</body>
+</html>
