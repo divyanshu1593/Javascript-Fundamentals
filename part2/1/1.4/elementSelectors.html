@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element selectors</title>
+</head>
+<body>
+    <!-- some example elements -->
+    <div>
+        <p id="para1">
+            some text
+        </p>
+    </div>
+    <ul class="list">
+        <li>1</li>
+        <li>2</li>
+    </ul>
+    <form action="">
+        <input type="text" name="name">
+        <input type="submit">
+    </form>
+    <script>
+        // we can select elements in following ways
+
+        // by using document.getElementById(id);
+        // id needs to be unique
+        // it only works on the whole document
+        console.log(document.getElementById('para1'));
+
+        // also all the element with id becomes global element
+        // so window.para1 will be refering to the element with id as para1
+        console.log(para1);
+        // it will be overwritten when an variable with name para1 will be declared
+        // it is NOT advised to select element like this, instead getElementById should be used
+
+        // by using elem.querySelectorAll(css)
+        // it returns an collection of nodes that mathces the css selector
+        console.log(document.body.querySelectorAll('li'));  // collection of all li elements
+
+        // by using elem.querySelector(css)
+        // it returns the first element that matches the css selector
+        console.log(document.body.querySelector('li'));  // only the first li element
+
+        // by using document.getElementsByName(name)
+        // works on the whole document
+        // searches by the name and returns LIVE collection of all the elements with matching name
+        console.log(document.getElementsByName('name'));
+
+        // by using elem.getElementsByClassName(className)
+        // searches by the class name in the element and returns LIVE collection of all the elemebnts with that class name
+        console.log(document.body.getElementsByClassName('list'));
+
+        // by usign elem.getElementsByTagName(tag)
+        // searches by tag in the element and returns LIVE collection of all the elements of that tag
+        console.log(document.body.getElementsByTagName('div'));
+
+
+        // we can use elem.matches(css) to check if the elem is matching the css selector or not
+        console.log(document.body.matches('head'));  // false
+        console.log(document.body.matches('body'));  // true
+
+        // we can use elem.closest(css) to find the closest ancestor (element from the parent chain, including that element)
+        console.log(document.body.lastElementChild.closest('body'));
+    </script>
+</body>
+</html>
