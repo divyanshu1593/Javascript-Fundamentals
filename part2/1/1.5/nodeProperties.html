@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node properties</title>
+</head>
+<body>
+    <!-- example tags -->
+    <div id="elemNode">
+        <p>some text</p>
+    </div>
+    <input type="text" id="inputElem" value="some value">
+    <script>
+        // all nodes are objects in DOM made by classes which forms an hirarchy
+
+        // following are the different node properties
+
+        // nodeType returns numeric value represnting the type of the node
+        console.log(elemNode.nodeType)  // 1 element node
+        console.log(document.nodeType);  // 9 document node
+        console.log(document.body.childNodes[1].nodeType);  // 8 comment node
+
+        // nodeName or tagName
+        // tagName only exists for element nodes but nodeName exists for all types of nodes
+        console.log(elemNode.tagName);  // DIV
+        console.log(elemNode.nodeName);  // DIV
+        console.log(document.body.childNodes[1].tagName);  // undefined, becuase it is not a element node
+        console.log(document.body.childNodes[1].nodeName);  // #comment
+
+        // innerHTML gives the inner html of the element
+        console.log(elemNode.innerHTML);  // <p>some text</p>
+        // we can edit it to change the html page
+        elemNode.innerHTML = '<b> some bold text';
+        console.log(elemNode.innerHTML);  // <b> some bold text</b>, the closing tag will be automatically added by the browser and the html page will show updated html
+        elemNode.innerHTML += '<p> appending some more text </p>';
+
+        // outerHTML gives the inner html + the element itself
+        console.log(elemNode.outerHTML);  // the whole div element
+        // we can also edit it to change the html page
+        elemNode.outerHTML = `<div id='elemNode'>changing the element</div>`;
+        console.log(elemNode.outerHTML);
+
+        // but if we change the element using outerHTML then the variable will still refer to the old element only
+        // this was not a problem in the above example because it was window.elemHTML which refer to the id
+        // Example
+        let someElem = document.querySelector('div');
+        someElem.outerHTML = `<div id=elemNode'>changed element</div>`;
+        console.log(someElem.outerHTML);  // still the old value, but in actual the content on page is updated
+        // we need to select it again to see it
+        someElem = document.querySelector('div');
+        console.log(someElem.outerHTML);  // new updated value
+
+        // hidden property
+        // adding hidden attribute to any tag will be same as style="display:none";
+        someElem.hidden = true;
+        // now the div will not be visible on the screen
+        alert('The div will not be visible for now');
+        someElem.hidden = false;  // normal again
+
+        // nodeValue or data is counterpart of innerHTML but for not element nodes
+        console.log(document.body.childNodes[1].data);  // example tags
+        // we can also modify it
+        document.body.childNodes[1].data = 'some comment';
+        console.log(document.body.childNodes[1].data);  // some comment
+
+        // textContent shows only the text content inside the element, it will not show the html tags
+        console.log(someElem.textContent);  // changed element
+        // modifying the textContent will NOT add any html
+        someElem.textContent = '<b> some other text </b>';
+        console.log(someElem.innerHTML);  // &lt;b&gt; some other text &lt;/b&gt;
+
+        // there are some other class specific propertis like the HTMLINputElement will have value property
+        console.log(inputElem.value);  // some value
+    </script>
+</body>
+</html>

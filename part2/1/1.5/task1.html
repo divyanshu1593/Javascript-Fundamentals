@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+</head>
+<!-- 
+    There’s a tree structured as nested ul/li.
+
+Write the code that for each <li> shows:
+
+What’s the text inside it (without the subtree)
+The number of nested <li> – all descendants, including the deeply nested ones.
+ -->
+<body>
+    <ul>
+        <li>Animals
+            <ul>
+                <li>Mammals
+                    <ul>
+                        <li>Cows</li>
+                        <li>Donkeys</li>
+                        <li>Dogs</li>
+                        <li>Tigers</li>
+                    </ul>
+                </li>
+                <li>Other
+                    <ul>
+                        <li>snakes</li>
+                        <li>birds</li>
+                        <li>lizards</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>Fishes
+            <ul>
+                <li>Aquarium
+                    <ul>
+                        <li>Guppy</li>
+                        <li>Anglefish</li>
+                    </ul>
+                </li>
+                <li>sea
+                    <ul>
+                        <li>sea trout</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <script>
+        function func(){
+            for (let li of document.querySelectorAll('li')){
+                let name = li.firstChild.data.trim();
+                let cnt = li.querySelectorAll('li').length;
+                alert(`${name}: ${cnt}`);
+            }
+        }
+
+        func()
+    </script>
+</body>
+</html>
