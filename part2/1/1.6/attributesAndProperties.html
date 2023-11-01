@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attributes and Properties</title>
+</head>
+<body value="testing">
+    <div id="div"></div>
+    <input id="input" type="checkbox" value="some" checked>
+    <a href="#input" id="a"></a>
+    <script>
+        let div = document.querySelector('div');
+
+        // standard attributes become the property of the DOM object
+        console.log(div.id);  // div, because id is a standart attribute
+
+        // non-standard attributtes does not become property of DOM object
+        console.log(document.body.value);  // undefined, because value is not a standard attribute for body (but it is a standard attribute for input)
+
+        // we can use following methods to access all type of attributtes
+        // elem.hasAttribute(attr) to check if the element has that attribute or not
+        // the name of attr can be case-insensitive
+        console.log(div.hasAttribute('value'));  // false
+        console.log(div.hasAttribute('id'));  // true
+
+        // elem.getAttribute(attr) to get the value of attr
+        // the value of a attribute is always a string
+        console.log(div.getAttribute('id'));  // div
+
+        // elem.setAttribute(attr, value) to set the value of the attribute
+        // the value of a attribute is always a string, so here the value will be implicitly converted to the string if it is not string
+        div.setAttribute('newAttr', 123);
+        console.log(div.getAttribute('newAttr'));  // 123
+        console.log(typeof div.getAttribute('newAttr'));  // string
+
+        // elem.removeAttribute(attr) to remove the attribute from the tag
+        console.log(div.outerHTML);  // <div id="div" newattr="123"></div>
+        div.removeAttribute('newAttr');
+        console.log(div.outerHTML);  // <div id="div"></div>
+        console.log(div.getAttribute('newAttr'));  // null
+
+        // elem.attributes is a collection of all the attributes with object with properties name and value
+        for (let attr of div.attributes){
+            console.log(`${attr.name} -> ${attr.value}`);
+        }
+
+        // HTML standard attributes and DOM object properties GENERALLY synchronized with some EXCEPTIONS
+        div.setAttribute('id', 'something');
+        console.log(div.id);  // something
+
+        div.id = 'id';
+        console.log(div.getAttribute('id'));  // id
+
+        // some exception are input.value
+        // it is synchronized for attribute -> property
+        console.log(input.getAttribute('value'));  // some
+        input.setAttribute('value', 'other');
+        console.log(input.value);  // other
+
+        // but it is not synchronized for property -> attribute
+        input.value = 'old';
+        console.log(input.getAttribute('value'));  // other, didn't change
+
+        // DOM object properties are typed
+        // i.e. they does not need to be string
+        console.log(typeof input.checked);  // boolean
+
+        // when both attribute and property are string then also it is possible that they have different value
+        console.log(a.getAttribute('href'));  // #input
+        console.log(a.href);  // file:///D:/Javascript-Fundamentals/part2/1/1.6/attributesAndProperties.html#input
+
+        // we can add non-standard attributes to mark something in the html for javascript or to pass some data from html to javascript
+        // attributes starting with 'data-' are RESERVED for programmers. i.e. in future no standard element will come with name starting with 'data-'
+        // and this data are stored in dataset property of that elements DOM object
+        div.setAttribute('data-something', 'someValue');
+        console.log(div.dataset.something);  // someValue
+
+        div.setAttribute('data-other-value', 'otherValue');
+        // if there are more than one value in the name of data then it will be automatically converted to the camel case
+        console.log(div.dataset.otherValue);  // otherVlaue
+
+        // we can also add method to the DOM object
+        div.sayTagName = function() {
+            console.log(this.tagName);
+        }
+
+        div.sayTagName();  // DIV
+        
+    </script>
+</body>
+</html>
