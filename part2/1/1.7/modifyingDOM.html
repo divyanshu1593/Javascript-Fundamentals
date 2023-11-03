@@ -47,7 +47,73 @@
         document.querySelector('script').before('<p> some text </p>');
         console.log(document.querySelector('script').previousSibling.nodeName);  // #text
 
+        // methods to add HTML to the page
+        // elem.insertAdecentHTMl(where, HTML)
+        // where can be following
+        // beforebegin same as before
+        // afterbegin same as prepend
+        // beforeend same as append
+        // afterend same as after
+        document.querySelector('script').insertAdjacentHTML('beforebegin', '<b> test text </b>');
+        console.log(document.querySelector('script').previousElementSibling.tagName);  // B
 
+        // there also exist methods like elem.insertAdjacentText and elem.insertAdjacentElement with same syntax
+
+        // methode to remove a node
+        // elem.remove() to remove that node from the page
+
+        document.querySelector('script').previousElementSibling.remove();
+        console.log(document.querySelector('script').previousSibling);  // "<p> some text </p>"
+
+        // inserting a node will automatically remove that node from its previous location
+
+        // method to clone the node
+        // node.cloneNode(true) for deep cloning the node i.e. clone the node with its children
+        ul = document.createElement('ul');
+        ul.id = 'ul';
+        document.querySelector('script').before(ul);
+        
+        temp = document.createElement('li');
+        temp.innerHTML = '1';
+
+        ul.append(temp);
+
+        let someClone = ul.cloneNode(true);
+        ul.after(someClone);
+
+        console.log(document.body.children[0]);
+        console.log(document.body.children[1]);
+
+        someClone = ul.cloneNode(false);
+        ul.before(someClone);
+
+        console.log(document.body.children[0]);  // without child nodes
+
+        // node.cloneNode(false) for cloning the node i.e. clone the node without its children
+
+        // documentFragment is a wrapper node, so we can add differnet nodes to it and when we add the documentFragment to DOM then instead of it, its content is added
+        let docFrag = new DocumentFragment();
+
+        let temp1 = document.createElement('li');
+        temp1.innerHTML = '1';
+
+        let temp2 = document.createElement('li');
+        temp2.innerHTML = '2';
+
+        let temp3 = document.createElement('li');
+        temp1.innerHTML = '3';
+
+        docFrag.append(temp1);
+        docFrag.append(temp2);
+        docFrag.append(temp3);
+
+        div = document.createElement('div');
+        div.id = 'div';
+        document.querySelector('script').before(div);
+
+        div.append(docFrag);
+
+        console.log(div.innerHTML);
     </script>
 </body>
 </html>
