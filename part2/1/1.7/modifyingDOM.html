@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifying DOM</title>
+</head>
+<body>
+    <script>
+        // methods for creating DOM nodes
+        // document.createElement(tagName) for creating an element node
+        let div = document.createElement('div');
+        console.log(div.tagName);  // DIV
+
+        // document.createTextNode(text) for creating a text node
+        let textNode = document.createTextNode('Some text');
+        console.log(textNode.nodeName);  // #text
+
+        // methods for adding the node in html page
+        // elem.append(nodes or strings) to insert the node inside the elem at the end
+        // strings will be automatically converted to text nodes
+        let temp = document.createElement('p');
+        temp.innerHTML = 'test text';
+
+        div.append(textNode, temp, 'other text');
+        console.log(div.outerHTML);  // <div>Some text<p>test text</p>other text</div>
+
+        // elem.prepend(nodes or strings) to insert the node inside the elem and at the very begining of it as a first child
+        div.prepend('some prepended node');
+        console.log(div.outerHTML);  // <div>some prepended nodeSome text<p>test text</p>other text</div>
+
+        document.body.prepend(div);
+
+        // elem.before(nodes or strings) to add the node before the elem node (NOT inside the elem node)
+        div.before('this will be added before the div node');
+        console.log(div.previousSibling);  // "this will be added before the div"
+
+        // elem.after(nodes or strings) to add the node after the elem node (NOT inside the elem node)
+        div.after('this will be added after the div node');
+        console.log(div.nextSibling);  // "this will be added after the elem node"
+
+        // elem.replaceWith(nodes or strings) to replace the elem with the nodes or strings
+        div.replaceWith('The div is replaced with this text');
+        console.log(document.body.childNodes[1]);  // "the div is replaced with this text"
+
+        // the following string will be added as textNode the text will be automatically escaped
+        document.querySelector('script').before('<p> some text </p>');
+        console.log(document.querySelector('script').previousSibling.nodeName);  // #text
+
+
+    </script>
+</body>
+</html>
