@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styles and Classes</title>
+    <style>
+        .colorClass{
+            background: red;
+        }
+
+        #div{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="div" style="height: 50px; width: 50px;"></div>
+    <script>
+        // elem.className is for the class atribute of an element
+        div.className = 'class1 class2';
+        console.log(div.className);  // class1 class2
+        console.log(div.outerHTML);  // <div id="div" class="class1 class2"></div>
+
+        // elem.classList is an special ITERABLE object by which we can add, romve, toggle classes individually without effecting other classes
+        for (let cssClass of div.classList){
+            console.log(cssClass);
+        }
+
+        // elem.classList.add(class) to add the class
+        div.classList.add('class3');
+        console.log(div.className);  // class1 class2 class3
+
+        // elem.classList.remove(class) to remove the class
+        div.classList.remove('class3');
+        console.log(div.className);  // class1 class2
+
+        // elem.classList.contains(class) to check if the class if applied to an element or not
+        console.log(div.classList.contains('class3'));  // false
+        console.log(div.classList.contains('class2'));  // true
+
+        // elem.classList.toggle(class) adds the class if it is not added and removes class of it already is added to the elem
+        setInterval(() => div.classList.toggle('colorClass'), 1000);
+
+        // elem.style is a object correspoding to the style attribute of that elem
+        console.log(div.style.height);  // 50px
+        div.style.width = 100;  // won't work becuase the unit is not added
+        console.log(div.style.height);  // 50px, old value
+
+        div.style.width = '100px';
+        console.log(div.style.width);  // 100px
+
+        // to remove a property from the style of that element following things can be done
+        // elem.style.prop = ''; adding empty string to the elem.style.porp will meake the browser ignore it as if it was not added
+        // div.style.width = '';
+
+        // elem.style.removeProperty(prop) will do the same thing
+        div.style.removeProperty('width');
+
+        // elem.style.cssText will give the string value of the style attribute
+        console.log(div.style.cssText);  // height: 50px;
+        
+        div.style.cssText = 'height: 100px';  // this rewrites the whole style attribute
+        console.log(div.style.height);  // 100px
+
+        // elem.style object only have properties corresponding to the style attribute
+        // so it only has properties of inline css, NOT of internal or external css
+        console.log(div.style.border);  // empty string because it is set using the inernal css (NOT inline css)
+
+        // for this there is the function getComputedStyle(elem, [pseudo])
+        let divStyles = getComputedStyle(div);
+        // getComputedStyle returns resolved css, so it converts relative value like 1em or 34% to an absolute value like 15px
+        console.log(divStyles.border);  // 1px solid rgb(0, 0, 0)
+        // in above value there is rgb(0, 0, 0) instead of black because it is a resolved value
+    </script>
+</body>
+</html>

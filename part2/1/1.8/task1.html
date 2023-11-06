@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <style>
+        .notification{
+            color: yellow;
+            background: red;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Notification should be on right</h1>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora iste aspernatur eius perspiciatis cumque error nulla natus a. Impedit in sed consequatur sunt aliquid optio iure? Quis, blanditiis ea! Excepturi facilis animi voluptas id accusamus pariatur consequatur explicabo. Ab veritatis aliquam odit sequi dignissimos pariatur voluptas eius ea, dolore minima consectetur necessitatibus quos minus perferendis et rem repellat non laboriosam, tempora obcaecati quisquam expedita, praesentium sunt? Minus provident delectus, voluptas cumque tempora in praesentium. Eveniet assumenda excepturi vitae praesentium quam a rerum harum, recusandae magni in doloremque velit ea libero, quo repellendus maxime fuga. Placeat a molestiae in hic nam.
+    </p>
+    <script>
+        function showNotification(options){
+            let div = document.createElement('div');
+            div.className = 'notification';
+
+            div.innerHTML.textContent = options.html;
+            div.style.position = 'absolute';
+            div.style.top = options.top + 'px';
+            div.style.right = options.right + 'px';
+
+            document.body.append(div);
+        }
+
+        let cnt = 0;
+        setInterval(() => {
+            showNotification({
+                top: 10,
+                right: 10,
+                html: `Hello! ${++cnt}`,
+                className: 'welcome'
+            });
+        }, 1500);
+    </script>
+</body>
+</html>
