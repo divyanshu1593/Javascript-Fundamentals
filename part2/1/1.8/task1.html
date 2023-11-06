@@ -22,12 +22,13 @@
             let div = document.createElement('div');
             div.className = 'notification';
 
-            div.innerHTML.textContent = options.html;
+            div.innerHTML = options.html;
             div.style.position = 'absolute';
             div.style.top = options.top + 'px';
             div.style.right = options.right + 'px';
 
             document.body.append(div);
+            setTimeout(() => document.querySelector('div').remove(), 1500);
         }
 
         let cnt = 0;
