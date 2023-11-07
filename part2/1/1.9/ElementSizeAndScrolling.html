@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element size and scrolling</title>
+    <style>
+        #outerParent{
+            position: absolute;
+            height: 500px;
+            width: 500px;
+            border: 1px solid black;
+        }
+
+        #innerDiv{
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            border: 10px solid black;
+            top: 100px;
+            left: 100px;
+            padding: 25px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="outerParent">
+        <div id="innerDiv">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis tempora quo est nemo sequi repellendus vero ipsa optio, praesentium dolor autem, doloremque veniam, corrupti distinctio quasi neque consequuntur minus ducimus. Ex quaerat veniam neque eius ipsum ad, odit soluta distinctio debitis? Nemo blanditiis eaque deserunt! Consequuntur, praesentium pariatur eius eveniet cumque exercitationem? Optio recusandae harum, consequuntur ratione, tempore hic, excepturi reiciendis itaque animi at velit enim repudiandae. Assumenda ullam quibusdam exercitationem aut delectus incidunt, hic nemo cum autem libero. Sapiente cum debitis beatae impedit illum voluptatibus et in quisquam sed iure, repudiandae hic temporibus officia ipsum, cupiditate consequatur vero, necessitatibus placeat! Reprehenderit blanditiis dignissimos nobis veritatis neque itaque possimus ad adipisci, molestias nulla, iste deserunt repudiandae ullam doloremque, quae enim culpa rerum beatae! Facilis facere dicta ut iste sequi ad dolores, non inventore perspiciatis, quis ipsum quibusdam recusandae, beatae repellendus itaque reprehenderit provident. Eos, error autem blanditiis odio sunt laboriosam, culpa iste eum, nihil eius quaerat id fuga reprehenderit rem iusto asperiores veritatis maiores non tempora labore! Quas corrupti reprehenderit inventore aperiam ratione, suscipit qui assumenda alias ut earum eos a saepe? Adipisci vero nihil quam earum praesentium, fugiat, animi porro iure tempora totam repellendus nostrum ullam! Fugit, quibusdam!
+        </div>
+    </div>
+    <script>
+        let innerDiv = document.getElementById('innerDiv');
+
+        // offset values are for the whole element including everything
+        console.log(innerDiv.offsetParent.id);  // outerParent
+        console.log(innerDiv.offsetHeight);  // 200 + (2 * 10) + (2 * 25) = 270 (div + border + padding)
+        console.log(innerDiv.offsetWidth);  // 200 + (2 * 10) + (2 * 25) = 270 (div + border + padding)
+        console.log(innerDiv.offsetTop);  // 100
+        console.log(innerDiv.offsetLeft);  // 100
+
+        // client values are for the inner box (except the border and scrollbar)
+        // NOTE that border and padding does NOT take space from the content elemement but the scrollbar TAKE width (in case of horizontal scrollbar) from the element
+        console.log(innerDiv.clientHeight);  // offset height - (2 * 10 of border) = 250
+        console.log(innerDiv.clientWidth);  // offset width - (2 * 10 of border) - width of scrollbar = 233 (so the width of scroll bar here is 17px)
+        console.log(innerDiv.clientTop);  // top left corner of outermost box of innerDiv compared to top left corner of inner box of innerDiv = 10px
+        console.log(innerDiv.clientLeft);  // 10px
+
+        // scroll values are for the whole content (incuding the hidden part of scrolled content)
+        console.log(innerDiv.scrollHeight);  // 1184
+        console.log(innerDiv.scrollWidth);  // 233, same as clientWidth because the content is not horizontally scrollable and it is not overflowing horizontally
+        // scrollTop is diffrence between where the actual top of content is (including the hidden part) - ClientTop
+        console.log(innerDiv.scrollTop);  // 0 because it is not scrolled
+        console.log(innerDiv.scrollLeft);  // 0 because content is not horizontally scrolable
+
+        // we can edit srollTop and scrollWidth
+        innerDiv.scrollTop = 50;  // it will scroll up by 50px
+        console.log(innerDiv.scrollTop);  // 50
+    </script>
+</body>
+</html>

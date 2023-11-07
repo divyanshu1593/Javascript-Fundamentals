@@ -1,0 +1,47 @@
+<!-- The elem.scrollTop property is the size of the scrolled out part from the top. How to get the size of the bottom scroll (let’s call it scrollBottom)?
+
+Write the code that works for an arbitrary elem.
+
+P.S. Please check your code: if there’s no scroll or the element is fully scrolled down, then it should return 0. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <style>
+        #outerParent{
+            position: absolute;
+            height: 500px;
+            width: 500px;
+            border: 1px solid black;
+        }
+
+        #innerDiv{
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            border: 10px solid black;
+            top: 100px;
+            left: 100px;
+            padding: 25px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="outerParent">
+        <div id="innerDiv">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis tempora quo est nemo sequi repellendus vero ipsa optio, praesentium dolor autem, doloremque veniam, corrupti distinctio quasi neque consequuntur minus ducimus. Ex quaerat veniam neque eius ipsum ad, odit soluta distinctio debitis? Nemo blanditiis eaque deserunt! Consequuntur, praesentium pariatur eius eveniet cumque exercitationem? Optio recusandae harum, consequuntur ratione, tempore hic, excepturi reiciendis itaque animi at velit enim repudiandae. Assumenda ullam quibusdam exercitationem aut delectus incidunt, hic nemo cum autem libero. Sapiente cum debitis beatae impedit illum voluptatibus et in quisquam sed iure, repudiandae hic temporibus officia ipsum, cupiditate consequatur vero, necessitatibus placeat! Reprehenderit blanditiis dignissimos nobis veritatis neque itaque possimus ad adipisci, molestias nulla, iste deserunt repudiandae ullam doloremque, quae enim culpa rerum beatae! Facilis facere dicta ut iste sequi ad dolores, non inventore perspiciatis, quis ipsum quibusdam recusandae, beatae repellendus itaque reprehenderit provident. Eos, error autem blanditiis odio sunt laboriosam, culpa iste eum, nihil eius quaerat id fuga reprehenderit rem iusto asperiores veritatis maiores non tempora labore! Quas corrupti reprehenderit inventore aperiam ratione, suscipit qui assumenda alias ut earum eos a saepe? Adipisci vero nihil quam earum praesentium, fugiat, animi porro iure tempora totam repellendus nostrum ullam! Fugit, quibusdam!
+        </div>
+    </div>
+    <script>
+        Element.prototype.scrollBottom = function (){
+            return this.scrollHeight - (this.scrollTop + this.clientHeight);
+        }
+        innerDiv.scrollTop = 1e9; 
+        console.log(innerDiv.scrollBottom());
+    </script>
+</body>
+</html>
