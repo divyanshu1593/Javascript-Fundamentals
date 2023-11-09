@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinates</title>
+    <style>
+        #div{
+            height: 50px;
+            width: 50px;
+            position: absolute;
+            top: 100px;
+            left: 500px;
+            background-color: red;
+            border: 1px solid black;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="div"></div>
+    <script>
+        // elem.getBoundingClientRect returns an instance of DOMRect class
+        // it is the smallest rectangle that encloses the elem
+        // the elem including the border of it
+        let rect = div.getBoundingClientRect();
+
+        // it has following properties
+        // NOTE: this are window coordinates so it will change if we scroll the page
+        console.log(rect.x);  // 500 + 5px of margin = 505 (no need to add border because it is part of elem and is enclosed inside the rect)
+        console.log(rect.y);  // 100 + 5px of margin = 105
+        console.log(rect.width);  // 50 + (2 * 1 of border) = 52
+        console.log(rect.height);  // 50 + (2 * 1 of border) = 52
+
+        // x,y is a point and width,height is a diagonal vector (negative width height means other directions) this togather defines the rectangle
+        // it also has other derived properties
+        console.log(rect.left);  // 505, here it is same as x because width and height are positive
+        console.log(rect.top);  // 105, here it is same as x because width and height are positive
+        console.log(rect.right);  // rect.left + rect.width = 505 + 52 = 557 (NOT same as css, it is calculated from left edge here)
+        console.log(rect.bottom);  // rect.top + rect.height = 105 + 52 = 157 (calculated from the top edge)
+
+        // document.elementFromPoint(x, y) will return the most nested element at that coordinates
+        // here x and y are window coordinates
+        // it will return null if the x or y is out of window 
+        // i.e. x < 0 || x > document.documentElement.clientWidth || y < 0 || y > document.documentElement.clientHeight
+        let elem = document.elementFromPoint(550, 150);
+        console.log(elem.nodeName);  // DIV
+        console.log(elem.id);  // div
+        console.log(document.elementFromPoint(document.documentElement.clientWidth + 1, 0));  // null
+
+        // to get document coordinates of an element do the following
+        // y coordinate = elem.top + window.pageYOffset
+        // x coordiate = elem.left + window.pageXOffset
+        // following are the document coordinates of the div
+        console.log(rect.left + window.pageXOffset, rect.top + window.pageYOffset);  // 505 105, because the page is not scrolled
+        
+    </script>
+</body>
+</html>
