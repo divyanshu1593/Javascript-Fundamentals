@@ -86,4 +86,4 @@ function plotGraph(coefficients){
     }
 }
 
-plotGraph([0, 0, 0, 1]);
+plotGraph([0, 0, 1]);
