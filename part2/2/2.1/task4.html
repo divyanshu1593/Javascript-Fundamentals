@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    #field {
+      width: 200px;
+      height: 150px;
+      border: 10px solid black;
+      background-color: #00FF00;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body style="height:2000px">
+
+  Click on a field to move the ball there.
+  <br> The ball should never leave the field.
+
+
+  <div id="field">
+    <img src="https://en.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+    . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  </div>
+
+  <script>
+    (async function (){
+        let contentLoaded = new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve()));
+        await contentLoaded;
+
+        field.style.position = 'absolute';
+        ball.style.position = 'absolute';
+
+        function getDocumentCoords(windowCoords){
+            return [windowCoords[0] + window.pageXOffset, windowCoords[1] + window.pageYOffset];
+        }
+
+        field.onclick = function (event){
+            let [documentX, documentY] = getDocumentCoords([event.clientX, event.clientY]);
+            let fieldRect = field.getBoundingClientRect();
+
+            if (documentX > fieldRect.left + field.clientLeft + ball.offsetWidth/2 + window.pageXOffset &&
+            documentX < fieldRect.left + field.clientLeft + (field.clientWidth - ball.offsetWidth/2) + window.pageXOffset &&
+            documentY > fieldRect.top + field.clientTop + ball.offsetHeight/2 + window.pageYOffset &&
+            documentY < fieldRect.top + field.clientTop + (field.clientHeight - ball.offsetHeight/2)+ window.pageYOffset){
+                ball.style.top = documentY - (pageYOffset + fieldRect.top + field.clientTop + ball.offsetHeight/2) + 'px';
+                ball.style.left = documentX - (pageXOffset + fieldRect.left + field.clientLeft + ball.offsetWidth/2) + 'px';
+            }
+        }
+    })();
+  </script>
+</body>
+</html>

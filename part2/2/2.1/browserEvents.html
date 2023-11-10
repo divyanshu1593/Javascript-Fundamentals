@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Events</title>
+</head>
+<body>
+    <button id="btn">Btn 1</button>
+    <button id="btn2" onclick="console.log('this handler is added using attribute');">Btn 2</button>
+    <button id="btn3" onclick="console.log('this wont be printed because it will be overwritten');">Btn 3</button>
+    <button id="btn4" onclick="console.log('This will be removed');">Btn 4</button>
+    <button id="btn5">Btn 5</button>
+    <button id="btn6">Btn 6</button>
+    <button id="btn7">Btn 7</button>
+    <button id="btn8">Btn 8</button>
+    <script>
+        // browser events can be like submit, click, mouseover... etc.
+        // it can be handled in following ways
+        // elem.on<event> = function () {}, here event can be any event and the function is the call back which will be executed whenever the event is triggred
+        btn.onclick = function (){
+            console.log('The button is clicked');
+        }
+
+        // we can also do the same using attributtes
+        // we need to add on<event> attribute to the element and its value will be javascript code
+        // the browser will put this javascript code into a function and add it to the on<event> method of that element
+        // NOTE that the value of attribute will be javascript code, NOT a callback
+        // Example: btn2
+
+        // adding a new handler for same event in same element will overwrite the on<event> property of that object
+        btn3.onclick = function (){
+            console.log('The older callback is overwritten');
+        }
+
+        // assigning null to the on<event> porperty removes the handler
+        btn4.onclick = null;  // now clicking the btn4 wont do anything
+
+        // we can add multiple event handler using following method
+        // elem.addEventListener(event, handler, [options])
+        // here event is a string name of event (WITHOUT 'on' before it) and handler is the callback that handles the event
+        // there is a third optional argument that is an object with many properties like property named 'once', if it is set to be true than the handler will automatically be removed once it is used for once
+        btn5.onclick = function (){
+            console.log('handler 1');
+        }
+
+        btn5.addEventListener('click', function (){
+            console.log('handler 2');
+        });
+
+        btn5.addEventListener('click', function(){
+            console.log('this msg will be shown only the first time');
+        }, {
+            once: true
+        });
+
+        // we can remove event lintener by following method
+        // elem.removeEventListener(event, handler, [options]) the handler need to be the SAME function that was given to addEventListener (so the handler needs to be stored in a variable)
+        function handler(){
+            console.log('a handler that will be removed');
+        }
+
+        btn6.addEventListener('click', handler);
+        btn6.addEventListener('click', function (){
+            console.log('an handler that wont be removed');
+        });
+
+        btn6.removeEventListener('click', handler);
+        btn6.removeEventListener('click', function (){
+            console.log('an handler that wont be removed');
+        });  // this will not work because it is not the same handler even if its content is same
+
+        // the browser passes an event object to the callback provided as a handler
+        // event object contains properties like event.type (the type of event like 'click') and event.currentTarget (the element on which the event is called)
+        // event object has many other event specific properties
+        btn7.onclick = function (event){  // the name can be anything else instead of 'event'
+            console.log(`event type: ${event.type}`);
+            console.log(`target element: ${event.currentTarget}`);
+            
+            // some event specific properties
+            console.log(`click x coordinate: ${event.clientX}`);
+            console.log(`click y coordinate: ${event.clientY}`);
+        }
+
+        // we can also use event object in the event handler added by attribute, but the name of the object HAS TO BE event
+
+        // we can also pass an object as an event handler, the object need to have a method with name handleEvent.
+        // NOTE that this is valid only for addEventListener. if we assign object to the on<event> property, it wont work
+        // Example
+        class Demo {
+            handleEvent(event){
+                this.showEventType(event);
+                this.showTargetElement(event);
+            }
+
+            showEventType(event){
+                console.log(event.type);
+            }
+
+            showTargetElement(event){
+                console.log(event.currentTarget);
+            }
+        }
+
+        let demo = new Demo();
+        btn8.addEventListener('click', demo);
+    </script>
+</body>
+</html>

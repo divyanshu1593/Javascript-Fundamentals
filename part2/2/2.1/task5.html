@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+   <span id="rightArrow" style="cursor: context-menu">▶</span><span id="downArrow" hidden style="cursor: context-menu">▼</span>Sweeties (click me)!
+  <ul hidden>
+    <li>Cake</li>
+    <li>Donut</li>
+    <li>Honey</li>
+  </ul>
+
+  <script>
+    let ul = document.querySelector('ul');
+    rightArrow.onclick = function (){
+        downArrow.hidden = false;
+        ul.hidden = false;
+        rightArrow.hidden = true;
+    }
+
+    downArrow.onclick = function (){
+        ul.hidden = true;
+        rightArrow.hidden = false;
+        downArrow.hidden = true;
+    }
+  </script>
+</body>
+</html>
