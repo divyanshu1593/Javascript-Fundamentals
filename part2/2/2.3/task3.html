@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    table {
+       border-collapse: collapse;
+     }
+     th, td {
+       border: 1px solid black;
+       padding: 4px;
+     }
+     th {
+       cursor: pointer;
+     }
+     th:hover {
+       background: yellow;
+     }
+  </style>
+</head>
+
+<body>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th data-type="number">Age</th>
+        <th data-type="string">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Pete</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Ann</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Eugene</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Ilya</td>
+      </tr>
+    </tbody>
+  </table>
+  <script>
+    grid.addEventListener('click', event => {
+        if (!event.target.tagName === 'TH') return ;
+
+        let cellIndex = event.target.cellIndex;
+        let dataType = event.target.dataset.type;
+
+        let rows = grid.lastElementChild.children;
+
+
+        for (let i = rows.length - 1; i > 1; i--){
+            for (let j = 0; j < i; j++){
+                let firstElement = rows[j].children[cellIndex].innerHTML;
+                let secondElement = rows[j + 1].children[cellIndex].innerHTML;
+
+                if (dataType == 'number'){
+                    firstElement = parseInt(firstElement);
+                    secondElement = parseInt(secondElement);
+                }
+
+                if (firstElement > secondElement){
+                    rows[j + 1].after(rows[j]);  // swap
+                }
+            }
+        }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!-- INCOMPLETE, yet to be completed -->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      height: 2000px;
+      /* make body scrollable, the tooltip should work after the scroll */
+    }
+
+    .tooltip {
+      /* some styles for the tooltip, you can use your own instead */
+      position: fixed;
+      padding: 10px 20px;
+      border: 1px solid #b3c9ce;
+      border-radius: 4px;
+      text-align: center;
+      font: italic 14px/1.3 sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+  <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+
+  <button data-tooltip="the tooltip is longer than the element">Short button</button>
+  <button data-tooltip="HTML<br>tooltip">One more button</button>
+
+  <p>Scroll the page to make buttons appear on the top, check if the tooltips show up correctly.</p>
+
+
+  <script>
+    document.addEventListener('mouseover', event => {
+        if (!event.target.hasAttribute('data-tooltip')) return ;
+
+        let tooltip = document.createElement('div');
+        tooltip.innerHTML = event.target.dataset.tooltip;
+        tooltip.className = 'tooltip';
+        event.target.parentNode.append(tooltip);
+
+        let tooltipRect = tooltip.getBoundingClientRect();
+        let btnRect = event.target.getBoundingClientRect();
+
+        if (btnRect.top > tooltipRect.height + 5){
+            tooltip.style.top = btnRect.top - (tooltipRect.height + 5) + 'px';
+        } else {
+            tooltip.style.top = btnRect.bottom + 5;
+        }
+    });
+
+    document.addEventListener('mouseout', event => {
+        if (!event.target.hasAttribute('data-tooltip')) return ;
+
+        event.target.parentNode.querySelector('.tooltip').remove();
+    });
+  </script>
+
+</body>
+</html>

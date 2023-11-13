@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Delegation</title>
+    <style>
+        div{
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="div">
+        <div id="div1">DIV 1</div>
+        <div id="div2">DIV 2</div>
+    </div>
+    <div data-highlight>DIV 3</div>
+    <script>
+        // if we want to add an common event listener to some elements then instead of adding it to every individual element we can add it to there common ancestor
+        // this process is called event delegation
+        div.addEventListener('click', event => {
+            console.log('this is the common thing that should happen when any of the div is clicked');
+        });
+
+        // we can add document wide behaviour, i.e. we can add behaviour to HTML elements that has some specific custom attribute
+        // so this way we can extend the HTML itself, now whenever we add that custom attribute to the html element then that will behave as coded in js method
+        // Example
+        document.addEventListener('click', event => {
+            let div = event.target.closest('div');
+
+            if (!div) return ;
+
+            if (!div.hasAttribute('data-highlight')) return ;
+
+            div.style.backgroundColor = 'red';
+
+            setTimeout((target) => {
+                target.style.backgroundColor = '';
+            }, 1000, event.target);
+        });
+    </script>
+</body>
+</html>
