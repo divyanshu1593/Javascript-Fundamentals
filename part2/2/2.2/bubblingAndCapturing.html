@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubbling and Capturing</title>
+    <style>
+        div{
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1">
+        DIV 1
+        <div id="div2">
+            DIV 2
+            <div id="div3">
+                DIV 3
+            </div>
+        </div>
+    </div>
+    <div id="div4">
+        DIV 4
+        <div id="div5">
+            DIV 5
+            <div id="div6">
+                DIV 6
+            </div>
+        </div>
+    </div>
+    <div id="div7">
+        DIV 7
+        <div id="div8">
+            DIV 8
+        </div>
+    </div>
+    <script>
+        // bubbling: when an event is triggered in the most nested element then it propogates to the parent till document object
+        // and all the event handlers will be handled it the same order
+        //Example
+        for (let div of document.querySelectorAll('div')){
+            div.addEventListener('click', event => {
+                console.log(`event.currentTarget: ${event.currentTarget.id}`);  // div3 -> div2 -> div1, if clicked on div3
+            });
+        }
+
+        // event.target shows the element where the event originated
+        for (let div of document.querySelectorAll('div')){
+            div.addEventListener('click', event => {
+                console.log(`event.target: ${event.target.id}`);  // the element where the event originated, for that element the event.currentTarget and event.target will be same
+            });
+        }
+
+        // bubbling can be stoped by any handler using the method event.stopPropagation()
+        // NOTE: bubbling should ONLY be stoped if it is needed
+        //Example
+        div5.addEventListener('click', event => {
+            event.stopPropagation();  // it will stop propogation after div5, div5 will be printed because that handler is before this handler
+        });
+
+        // event.stopPropagation() does not stop the handler on the same element (only stops upward bubbling)
+        // event.stopImmediatePropagation() stop the any further handling
+        // Example
+        div8.addEventListener('click', event => {
+            event.stopImmediatePropagation();
+        });
+
+        div8.addEventListener('click', event => {
+            console.log('this will not get executed');
+        });
+
+        // bubbling is the 3rd phase
+        // 2nd phase is target phase where the target element handles the event. (it is included in the 3rd phase or 1st phase)
+        // 1st phase is capturing phase that happens from the top (document) to the target element
+        // an event listener can either handle the event on bubbling phase or on captuiring phase
+        // 'capture' property of the OPTIONS object decides it, if is true than the events will be handled in capturing phase, otherwise it will be captured in bubbling phase
+        // Example
+        for (let div of document.querySelectorAll('div')){
+            div.addEventListener('click', event => {
+                console.log(`Phase Number: ${event.eventPhase}`);  // show the phase number, 1 here because it is capturing phase and 2 in case of the target element
+                console.log(`Capture: event.currentTarget: ${event.currentTarget.id}`);  // div1 -> div2 -> div3, if clicked in div3
+                console.log(`Capture: event.target: ${event.target.id}`);
+            }, {
+                capture: true
+            });
+        }
+    </script>
+</body>
+</html>
