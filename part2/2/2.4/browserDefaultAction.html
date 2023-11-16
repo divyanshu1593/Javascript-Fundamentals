@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser default actions</title>
+    <style>
+        #divDemo{
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://www.example.com" id="demoLink">this link wont work</a><br>
+    <a href="https://www.example.com" id="demoLink2">this link also wont work</a><br>
+    <a href="https://www.example.com" id="demoLink3">this link will work</a><br>
+    <a href="https://www.example.com" id="demoLink4">this link will also work</a><br>
+    <a href="https://www.example.com" id="demoLink5">this link also will not work</a><br>
+    <div data-ispassive id="divDemo">right click here</div>
+    <script>
+        // browser handles some events by default
+        // like, navigating to a link after clicking on it, selecting the text when mouse left button is pressed and scrolled, etc.
+        // Example
+        document.oncontextmenu = function (event){
+            if (event.target.hasAttribute('data-ispassive')) return ;
+            // any handlers are executed first and than the browser does its default behaviour
+            alert('context menu will be shown (default behavoir) after this alert');
+        }
+
+        // we can prevent the default behavoir of the browser on events by following methods
+        // event.preventDefault();
+        // Example
+        demoLink.onclick = function (event){
+            event.preventDefault();  // now clicking on the link will not navigate to it
+        }
+
+        // if we are assigning handler to elem.on<event> property then we can return false to do the same
+        demoLink2.onclick = function (event){
+            return false;
+        }
+
+        // NOTE that we need to return 'false', any other falsy value like 'undefined' wont work
+        // Example
+        demoLink3.onclick = function (event){
+            return ;  // this wont stop browsers default behaviour
+        }
+
+        // NOTE that returning false in the handler that is added by addEventListener() wont stop the default browser behaviour
+        // Example
+        demoLink4.onclick = function (event){
+            return false;  // if we had used event.preventDefault() then that whould have worked
+        }
+
+        // if we add passive: true property in the OPTIONS object in addEventListerner() then the browser can know in advance that the handler does not prevent the default behaviour
+        // so the default behaviour will be done prior to executing other event handlers
+        // NOTE, the following is not working as intended, so the reason is needed to be found
+        document.addEventListener('contextmenu', function (event){
+            if (!event.target.hasAttribute('data-ispassive')) return ;
+
+            alert('This alert will be shown after the context menu is shown');  // so the default behaviour happens first
+        }, {
+            passive: true
+        });
+
+        // the event.defaultPrevented property is true the defualt behavoiur is prevented otherwise it is false
+        // Example
+        demoLink5.onclick = function (event){
+            console.log(event.defaultPrevented);  // fasle
+            event.preventDefault();
+            console.log(event.defaultPrevented);  // true
+        }
+    </script>
+</body>
+</html>
