@@ -1,0 +1,17 @@
+#box{
+    position: absolute;
+    border: 1px solid black;
+}
+
+#bar1{
+    position: absolute;
+    border: 1px solid white;
+    background-color: grey;
+}
+
+#bar2{
+    position: absolute;
+    border: 1px solid white;
+    background-color: grey;
+
+}
