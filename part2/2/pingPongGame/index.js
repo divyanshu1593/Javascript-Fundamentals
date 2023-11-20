@@ -16,35 +16,76 @@ let boxRect = box.getBoundingClientRect();
 let barHeight = boxRect.height * 0.15;
 let barWidth = 10;
 
-let bar1 = document.getElementById('bar1');
-let bar2 = document.getElementById('bar2');
+class Bar {
+    constructor(barDiv, height, width, isLeft){
+        this.bar = barDiv;
 
-bar1.style.height = barHeight + 'px';
-bar1.style.width = barWidth + 'px';
+        this.bar.style.height = height + 'px';
+        this.bar.style.width = width + 'px';
+        
+        if (!isLeft) this.bar.style.left = box.clientWidth - this.bar.offsetWidth + 'px';
 
-bar2.style.height = barHeight + 'px';
-bar2.style.width = barWidth + 'px';
-bar2.style.left = box.clientWidth - bar2.offsetWidth + 'px';
+        this.#makeBarScrollable(isLeft);
+    }
 
-let bar1IntervalId;
-bar1.addEventListener('mousedown', event => {
-    bar1IntervalId = setInterval(() => {
-        bar1.dispatchEvent(new CustomEvent('updateCoords', {
-            detail: {
-                updatedTop: event.clientY - (boxRect.top + box.clientTop) + 'px'
+    #makeBarScrollable(isLeft){
+        let isBarMouseDown = false;
+    
+        this.bar.addEventListener('mousedown', () => {
+            isBarMouseDown = true;
+        });
+    
+        document.addEventListener('mouseup', () => {
+            if (isBarMouseDown) isBarMouseDown = false;
+        });
+    
+        document.addEventListener('mousemove', event => {
+            if (!isBarMouseDown) return ;
+    
+            let boxTop = event.clientY - (boxRect.top + box.clientTop);
+    
+            if (boxTop > this.bar.offsetHeight/2 && boxTop < box.clientHeight - this.bar.offsetHeight/2){
+                this.bar.style.top = boxTop - this.bar.offsetHeight/2 + 'px';
             }
-        }));
-    })
-});
 
-document.addEventListener('mouseup', () => {
-    if (!bar1IntervalId) return ;
+            document.dispatchEvent(new CustomEvent('barmoved', {
+                bubbles: true,
+                detail: {
+                    isLeftBar: isLeft,
+                    top: boxTop - this.bar.offsetHeight/2
+                }
+            }));
+        });
+    }
+}
 
-    console.log('stoped');
-    clearInterval(bar1IntervalId);
-    bar1IntervalId = null;
-})
+let bar1 = new Bar(document.getElementById('bar1'), barHeight, barWidth, true);
+let bar2 = new Bar(document.getElementById('bar2'), barHeight, barWidth, false);
 
-bar1.addEventListener('updateCoords', event => {
-    bar1.style.top = event.detail.updatedTop;
-});
+class Ball {
+    constructor(ballDiv, initBar){
+        this.ball = ballDiv;
+        let size = boxRect.height * 0.05;
+
+        this.ball.style.height = size + 'px';
+        this.ball.style.width = size + 'px';
+        this.ball.style.borderRadius = size/2 + 'px';
+
+        this.inMovingState = false;
+        this.#matchHeightWithBar(initBar);
+        
+        document.addEventListener('barmoved', event => {
+            if (!event.detail.isLeftBar) return ;
+
+            this.#matchHeightWithBar(initBar);
+        });
+    }
+
+    #matchHeightWithBar(initBar){
+        let barRect = initBar.bar.getBoundingClientRect()
+        this.ball.style.top = barRect.top + barRect.height/2 - (this.ball.offsetHeight/2 + boxRect.top) + 'px';
+        this.ball.style.left = initBar.bar.offsetWidth + 1 + 'px';
+    }
+}
+
+let ball = new Ball(document.getElementById('ball'), bar1);
