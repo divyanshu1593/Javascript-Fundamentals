@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse movements</title>
+    <style>
+        div{
+            padding: 50px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1">DIV 1</div>
+    <div id="div2">DIV 2</div>
+    <div id="parent">
+        Parent
+        <div id="child">Child</div>
+    </div>
+    <div id="outer">
+        Outer
+        <div id="inner">Inner</div>
+    </div>
+    <script>
+        // mouseover and mouseout events get triggered when the pointer comes over an element or goes outside of it
+        // its event object have some special properties like relatedTarget
+        // In case of mouseover the element form which the pointer in comming is relatedTarget
+        // relatedTarget will be null of the poiter is comming from outside of the window
+        div1.addEventListener('mouseover', event => {
+            if (event.relatedTarget){
+                console.log(event.relatedTarget.tagName);
+            } else {
+                console.log(event.relatedTarget);
+            }
+        });
+
+        // In case of mouseout the element to which the pointer goes to is relatedTarget
+        // relatedTarget will be null of the poiter is going outside of the window
+        div1.addEventListener('mouseout', event => {
+            if (event.relatedTarget){
+                console.log(event.relatedTarget.tagName);
+            } else {
+                console.log(event.relatedTarget);
+            }
+        });
+
+        // NOTE that moving the mouse very fast might skip some elements in between and so in that case the relatedTarget might not be the element next to it
+
+        // moving the mouse form parent element to child element also triggers mouseout from parent and mousein from the child
+        // becuase accoring to it, at a time, the mouse can be over any one element (The most nested one)
+        // hence even though we are not going out of parent element but it still will trigger the mouseout event
+        let parent = document.getElementById('parent');
+        parent.addEventListener('mouseover', () => {
+            console.log(`${event.target.id}: mouseover`);
+        });
+
+        parent.addEventListener('mouseout', () => {
+            console.log(`${event.target.id}: mouseout`);
+        });
+
+        // mouseenter and mouseleave events are same as mouseover and mouseout with following two differences
+        // it does not bubble
+        // and it does not trigger any event on parent on going to the nested element (only mouseenter gets triggered in child element)
+        outer.addEventListener('mouseenter', () => {
+            console.log(`${event.target.id}: mouseenter`);
+        });
+
+        outer.addEventListener('mouseleave', () => {
+            console.log(`${event.target.id}: mouseleave`);
+        });
+    </script>
+</body>
+</html>
